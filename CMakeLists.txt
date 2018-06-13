@@ -10,17 +10,17 @@ set(bench_output_dir benchResults)
 file(MAKE_DIRECTORY ${bench_output_dir})
 
 add_executable(fact main/main.c lib/fact.c)
-target_compile_options(fact PUBLIC -O3)
+set_target_properties(fact PROPERTIES COMPILE_FLAGS -O3)
 
 add_executable(factDebug main/main.c lib/fact.c)
-target_compile_options(factDebug PUBLIC -g)
+set_target_properties(factDebug PROPERTIES COMPILE_FLAGS -g)
 
 add_executable(factUtests tests/factGoogleTests.cpp lib/fact.c)
-target_compile_options(factDebug PUBLIC -DDO_TESTS)
+set_target_properties(factUtests PROPERTIES COMPILE_FLAGS -DDO_TESTS)
 target_link_libraries(factUtests gtest pthread)
 
 add_executable(factBenchs lib/fact.c tests/factGoogleBenchmark.cpp)
-target_compile_options(factBenchs PUBLIC -DDO_TESTS)
+set_target_properties(factBenchs PROPERTIES COMPILE_FLAGS -DDO_TESTS)
 target_link_libraries(factBenchs benchmark pthread)
 
 add_test(UT_one factUtests --gtest_filter=one)
