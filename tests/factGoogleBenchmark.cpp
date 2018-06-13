@@ -1,6 +1,6 @@
 #include <benchmark/benchmark.h>
 
-extern "C" long fact (int val);
+extern "C" unsigned long long fact (int val);
 
 #define DECLARE_BENCHMARK(name, testCase) \
 	static void BM_##name(benchmark::State& state) { \

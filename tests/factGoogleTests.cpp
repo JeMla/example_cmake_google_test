@@ -1,8 +1,8 @@
 #include "gtest/gtest.h"
 
-extern "C" long fact (int val);
+extern "C" unsigned long long fact (int val);
 
-unsigned long int testVect [] = {
+unsigned long long testVect [] = {
 	1,
 	1,
 	2,

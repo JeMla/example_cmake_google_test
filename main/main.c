@@ -1,12 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-long fact (int val);
+unsigned long long fact (int val);
 
 int main (int argc, char **argv)
 {
 	int value;
-	long computed;
+	unsigned long long computed;
 
 	if (argc != 2) {
 		fprintf(stderr, "Missing arguments\n");
@@ -19,7 +19,7 @@ int main (int argc, char **argv)
 	computed = fact(value);
 
 	fprintf(stdout,
-		"Fact %d is %ld\n",
+		"Fact %d is %llu\n",
 		value, computed);
 
 	return 0;
