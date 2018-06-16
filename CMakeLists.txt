@@ -1,5 +1,5 @@
 cmake_minimum_required (VERSION 2.6)
-project (fact_codinggame)
+project (learn_cmake)
 set (fact_VERSION_MAJOR 1)
 set (fact_VERSION_MINOR 0)
 
