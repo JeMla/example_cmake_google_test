@@ -5,26 +5,9 @@ set (fact_VERSION_MAJOR 1)
 set (fact_VERSION_MINOR 0)
 
 set(googletest_release 1.8.0)
-
-# FIXME
-# There is an issue for the compilation of google benchmark. It can not find
-# the headers of google test, saying that GTEST_INCLUDE_DIR is not defined.
-# Google test is not installed in a standard path, since it is compiled in
-# this project. The definition and/or the export of GTEST_INCLUDE_DIR, in
-# the CMakeLists or here or in the shell doesn't solve the problem.
-# However, some (environment ?) variables are taken into account by google
-# benchmark: setting GTEST_ROOT change the behaviour or google bechmark. Without
-# this definition, google benchmark fails telling that GTEST_LIBRARY,
-# GTEST_INCLUDE_DIR and GTEST_MAIN_LIBRARY could not be found. By defining
-# GTEST_ROOT, only GTEST_INCLUDE_DIR still missing.
-# The creation of symbolic links to /usr/include/ that points to the headers of
-# google test solve the problem. It seems to be related to the installation
-# directory.
-# I'll try to use cmake to install gtest in a non standard directory
-# instead of just pointing to the src or to the build directory.
 option(USE_GOOGLE_BENCHMARK
 	"Compile google benchmark and the related test cases"
-	OFF)
+	ON)
 
 if (USE_GOOGLE_BENCHMARK)
 set(googlebenchmark_release v1.4.1)
@@ -49,7 +32,7 @@ target_link_libraries(factUtests libgtest pthread)
 if (USE_GOOGLE_BENCHMARK)
 add_executable(factBenchs lib/fact.c tests/factGoogleBenchmark.cpp)
 set_target_properties(factBenchs PROPERTIES COMPILE_FLAGS -DDO_TESTS)
-target_link_libraries(factBenchs benchmark pthread)
+target_link_libraries(factBenchs libgbenchmark pthread rt)
 endif()
 
 include(ExternalProject)
@@ -76,7 +59,18 @@ if (USE_GOOGLE_BENCHMARK)
 	URL https://github.com/google/benchmark/archive/${googlebenchmark_release}.zip
 	PREFIX ${CMAKE_CURRENT_BINARY_DIR}/googlebenchmark-${googlebenchmark_release}
 	INSTALL_COMMAND ""
+	CMAKE_ARGS -DBENCHMARK_ENABLE_GTEST_TESTS=OFF -DCMAKE_BUILD_TYPE=RELEASE
 	)
+ExternalProject_Get_Property(googlebenchmark source_dir binary_dir)
+add_library(libgbenchmark IMPORTED STATIC GLOBAL)
+add_dependencies(libgbenchmark googletest)
+set_target_properties(libgbenchmark PROPERTIES
+	"IMPORTED_LOCATION" "${binary_dir}/src/libbenchmark.a"
+	"IMPORTED_LINK_INTERFACE_LIBRARIES" "${CMAKE_THREAD_LIBS_INIT}"
+	)
+include_directories("${source_dir}/include")
+
+
 endif()
 add_test(UTs factUtests)
 add_test(UT_twenty factUtests --gtest_filter=twenty)
