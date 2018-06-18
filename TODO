@@ -1,0 +1,16 @@
+
+- [ ] add_library for fact & rename the target of the main program
+- [ ] Include directories, instead of relative pathes for targets
+- [ ] Adding Support for a Dashboard (Step 7)
+  -> https://gitlab.kitware.com/cmake/community/wikis/doc/tutorials/How-To-Find-Libraries
+  Local installation of a server ?
+- [ ] Building an Installer (Step 6)
+  -> https://gitlab.kitware.com/cmake/community/wikis/doc/tutorials/How-To-Find-Libraries
+- [ ] System Introspection & prepare finder : create a new project that looks for libfact
+  -> https://gitlab.kitware.com/cmake/community/wikis/doc/tutorials/How-To-Find-Libraries
+- [ ] Adding a Generated File and Generator (Step 5)
+  -> https://cmake.org/cmake-tutorial/
+- [ ] Retry : Incorporating Into An Existing CMake Project (I could not make it work)
+  -> https://github.com/google/googletest/blob/master/googletest/README.md
+- [ ] Write the "Yet another tutorial" for the intergation of google tools in cmake
+
