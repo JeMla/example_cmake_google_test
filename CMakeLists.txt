@@ -1,8 +1,8 @@
 # 2.8.12 is the minimum version required for google benchmark v1.4.1
 cmake_minimum_required (VERSION 2.8.12)
 project (learn_cmake)
-set (fact_VERSION_MAJOR 1)
-set (fact_VERSION_MINOR 0)
+set (prgm_VERSION_MAJOR 1)
+set (prgm_VERSION_MINOR 0)
 
 option(USE_GOOGLE_TEST
 	"Compile google test and the related test cases"
@@ -22,16 +22,16 @@ enable_testing()
 set(bench_output_dir benchResults)
 file(MAKE_DIRECTORY ${bench_output_dir})
 
-add_executable(fact main/main.c lib/fact.c)
-set_target_properties(fact PROPERTIES COMPILE_FLAGS -O3)
+add_executable(prgm main/main.c lib/fact.c)
+set_target_properties(prgm PROPERTIES COMPILE_FLAGS -O3)
 
-add_executable(factDebug main/main.c lib/fact.c)
-set_target_properties(factDebug PROPERTIES COMPILE_FLAGS -g)
+add_executable(prgmDebug main/main.c lib/fact.c)
+set_target_properties(prgmDebug PROPERTIES COMPILE_FLAGS -g)
 
 if (USE_GOOGLE_TEST)
-add_executable(factUtests tests/factGoogleTests.cpp lib/fact.c)
-set_target_properties(factUtests PROPERTIES COMPILE_FLAGS -DDO_TESTS)
-target_link_libraries(factUtests libgtest pthread)
+add_executable(prgmUtests tests/factGoogleTests.cpp lib/fact.c)
+set_target_properties(prgmUtests PROPERTIES COMPILE_FLAGS -DDO_TESTS)
+target_link_libraries(prgmUtests libgtest pthread)
 
 include(ExternalProject)
 ExternalProject_Add(
@@ -50,15 +50,15 @@ set_target_properties(libgtest PROPERTIES
 	)
 include_directories("${source_dir}/googletest/include")
 
-add_test(UTs factUtests)
-add_test(UT_twenty factUtests --gtest_filter=twenty)
+add_test(UTs prgmUtests)
+add_test(UT_twenty prgmUtests --gtest_filter=twenty)
 endif()
 
 
 if (USE_GOOGLE_BENCHMARK)
-add_executable(factBenchs lib/fact.c tests/factGoogleBenchmark.cpp)
-set_target_properties(factBenchs PROPERTIES COMPILE_FLAGS -DDO_TESTS)
-target_link_libraries(factBenchs libgbenchmark pthread rt)
+add_executable(prgmBenchs lib/fact.c tests/factGoogleBenchmark.cpp)
+set_target_properties(prgmBenchs PROPERTIES COMPILE_FLAGS -DDO_TESTS)
+target_link_libraries(prgmBenchs libgbenchmark pthread rt)
 
 ExternalProject_Add(
 	googlebenchmark
@@ -76,7 +76,7 @@ set_target_properties(libgbenchmark PROPERTIES
 	)
 include_directories("${source_dir}/include")
 
-add_test(BMs factBenchs --benchmark_format=csv --benchmark_out=./benchResults/Benchmarks.csv)
-add_test(BM_twenty factBenchs --benchmark_filter=twenty --benchmark_format=csv --benchmark_out=./benchResults/twenty.csv)
+add_test(BMs prgmBenchs --benchmark_format=csv --benchmark_out=./benchResults/Benchmarks.csv)
+add_test(BM_twenty prgmBenchs --benchmark_filter=twenty --benchmark_format=csv --benchmark_out=./benchResults/twenty.csv)
 endif()
 
