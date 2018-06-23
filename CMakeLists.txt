@@ -16,22 +16,28 @@ option(USE_GOOGLE_BENCHMARK
 set(USE_GOOGLE_BENCHMARK_RELEASE "1.4.1" CACHE STRING
 	"Select the release of google benchmark to use")
 
+add_subdirectory(lib)
+get_target_property(inc fact INCLUDE_DIRECTORIES)
+include_directories(${inc})
+
 add_definitions(-Wall -g)
 
 enable_testing()
 set(bench_output_dir benchResults)
 file(MAKE_DIRECTORY ${bench_output_dir})
 
-add_executable(prgm main/main.c lib/fact.c)
+add_executable(prgm main/main.c)
 set_target_properties(prgm PROPERTIES COMPILE_FLAGS -O3)
+target_link_libraries(prgm fact)
 
-add_executable(prgmDebug main/main.c lib/fact.c)
+add_executable(prgmDebug main/main.c)
 set_target_properties(prgmDebug PROPERTIES COMPILE_FLAGS -g)
+target_link_libraries(prgmDebug fact)
 
 if (USE_GOOGLE_TEST)
-add_executable(prgmUtests tests/factGoogleTests.cpp lib/fact.c)
+add_executable(prgmUtests tests/factGoogleTests.cpp)
 set_target_properties(prgmUtests PROPERTIES COMPILE_FLAGS -DDO_TESTS)
-target_link_libraries(prgmUtests libgtest pthread)
+target_link_libraries(prgmUtests libgtest pthread fact)
 
 include(ExternalProject)
 ExternalProject_Add(
@@ -56,9 +62,9 @@ endif()
 
 
 if (USE_GOOGLE_BENCHMARK)
-add_executable(prgmBenchs lib/fact.c tests/factGoogleBenchmark.cpp)
+add_executable(prgmBenchs tests/factGoogleBenchmark.cpp)
 set_target_properties(prgmBenchs PROPERTIES COMPILE_FLAGS -DDO_TESTS)
-target_link_libraries(prgmBenchs libgbenchmark pthread rt)
+target_link_libraries(prgmBenchs libgbenchmark pthread rt fact)
 
 ExternalProject_Add(
 	googlebenchmark

@@ -1,5 +1,6 @@
 
-- [ ] add_library for fact & rename the target of the main program
+- [X] add_library for fact & rename the target of the main program
+- [ ] Handle CMAKE_BUILD_TYPE
 - [ ] Include directories, instead of relative pathes for targets
 - [ ] Adding Support for a Dashboard (Step 7)
   -> https://gitlab.kitware.com/cmake/community/wikis/doc/tutorials/How-To-Find-Libraries

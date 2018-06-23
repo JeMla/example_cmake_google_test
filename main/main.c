@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-unsigned long long fact (int val);
+#include <fact.h>
 
 int main (int argc, char **argv)
 {
