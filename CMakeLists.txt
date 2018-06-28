@@ -23,7 +23,7 @@ include_directories(${inc})
 add_definitions(-Wall -g)
 
 enable_testing()
-set(bench_output_dir benchResults)
+set(bench_output_dir ${CMAKE_CURRENT_BINARY_DIR}/benchResults)
 file(MAKE_DIRECTORY ${bench_output_dir})
 
 add_executable(prgm main/main.c)
