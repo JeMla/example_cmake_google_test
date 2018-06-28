@@ -16,7 +16,7 @@ option(USE_GOOGLE_BENCHMARK
 set(USE_GOOGLE_BENCHMARK_RELEASE "1.4.1" CACHE STRING
 	"Select the release of google benchmark to use")
 
-add_subdirectory(lib)
+add_subdirectory(libs)
 get_target_property(inc fact INCLUDE_DIRECTORIES)
 include_directories(${inc})
 
