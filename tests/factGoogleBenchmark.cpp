@@ -4,7 +4,9 @@ extern "C" unsigned long long fact (int val);
 
 #define DECLARE_BENCHMARK(name, testCase) \
 	static void BM_##name(benchmark::State& state) { \
-		fact(testCase); \
+		for (auto _ : state) { \
+			fact(testCase); \
+		} \
 	}
 
 DECLARE_BENCHMARK(one, 0);
@@ -29,7 +31,7 @@ DECLARE_BENCHMARK(nineteen, 18);
 DECLARE_BENCHMARK(twenty, 19);
 
 
-BENCHMARK(BM_one);
+BENCHMARK(BM_one)->ReportAggregatesOnly(1)->Repetitions(3);
 BENCHMARK(BM_two);
 BENCHMARK(BM_three);
 BENCHMARK(BM_four);
@@ -51,4 +53,3 @@ BENCHMARK(BM_nineteen);
 BENCHMARK(BM_twenty);
 
 BENCHMARK_MAIN();
-
