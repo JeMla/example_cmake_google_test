@@ -7,13 +7,13 @@ set (prgm_VERSION_MINOR 0)
 option(USE_GOOGLE_TEST
 	"Compile google test and the related test cases"
 	ON)
-set(USE_GOOGLE_TEST_RELEASE "1.8.0" CACHE STRING
+set(USE_GOOGLE_TEST_RELEASE "1.10.0" CACHE STRING
 	"Select the release of google test to use")
 
 option(USE_GOOGLE_BENCHMARK
 	"Compile google benchmark and the related test cases"
 	ON)
-set(USE_GOOGLE_BENCHMARK_RELEASE "1.4.1" CACHE STRING
+set(USE_GOOGLE_BENCHMARK_RELEASE "1.5.0" CACHE STRING
 	"Select the release of google benchmark to use")
 
 add_subdirectory(lib)
@@ -42,8 +42,8 @@ target_link_libraries(prgmUtests libgtest pthread fact)
 include(ExternalProject)
 ExternalProject_Add(
 	googletest
-	URL https://github.com/google/googletest/archive/release-${USE_GOOGLE_TEST_RELEASE}.zip
-	URL_HASH SHA1=667f873ab7a4d246062565fad32fb6d8e203ee73
+    URL https://github.com/google/googletest/archive/release-${USE_GOOGLE_TEST_RELEASE}.zip
+	URL_HASH SHA1=9ea36bf6dd6383beab405fd619bdce05e66a6535
 	PREFIX ${CMAKE_CURRENT_BINARY_DIR}/googletest-${USE_GOOGLE_TEST_RELEASE}
 	INSTALL_COMMAND ""
 	)
@@ -51,7 +51,7 @@ ExternalProject_Get_Property(googletest source_dir binary_dir)
 add_library(libgtest IMPORTED STATIC GLOBAL)
 add_dependencies(libgtest googletest)
 set_target_properties(libgtest PROPERTIES
-	"IMPORTED_LOCATION" "${binary_dir}/googlemock/gtest/libgtest.a"
+	"IMPORTED_LOCATION" "${binary_dir}/lib/libgtest.a"
 	"IMPORTED_LINK_INTERFACE_LIBRARIES" "${CMAKE_THREAD_LIBS_INIT}"
 	)
 include_directories("${source_dir}/googletest/include")
@@ -69,13 +69,14 @@ target_link_libraries(prgmBenchs libgbenchmark pthread rt fact)
 ExternalProject_Add(
 	googlebenchmark
 	URL https://github.com/google/benchmark/archive/v${USE_GOOGLE_BENCHMARK_RELEASE}.zip
+    URL_HASH SHA1=a9c9bd8a28db82f5ba02998197cfcc4db5a67507
 	PREFIX ${CMAKE_CURRENT_BINARY_DIR}/googlebenchmark-v${USE_GOOGLE_BENCHMARK_RELEASE}
 	INSTALL_COMMAND ""
 	CMAKE_ARGS -DBENCHMARK_ENABLE_GTEST_TESTS=OFF -DCMAKE_BUILD_TYPE=RELEASE
 	)
 ExternalProject_Get_Property(googlebenchmark source_dir binary_dir)
 add_library(libgbenchmark IMPORTED STATIC GLOBAL)
-add_dependencies(libgbenchmark googletest)
+add_dependencies(libgbenchmark googlebenchmark)
 set_target_properties(libgbenchmark PROPERTIES
 	"IMPORTED_LOCATION" "${binary_dir}/src/libbenchmark.a"
 	"IMPORTED_LINK_INTERFACE_LIBRARIES" "${CMAKE_THREAD_LIBS_INIT}"
